@@ -66,7 +66,7 @@ function scerweima1($url=''){
 		imagecopyresampled($QR, $logo, $from_width, $from_width, 0, 0, $logo_qr_width,$logo_qr_height, $logo_width, $logo_height);
 		//删除临时二维码图片
   		@unlink($filename);
-	}  
+	}
 	//输出图片 
     ob_start();
 	imagepng($QR);
@@ -103,6 +103,7 @@ function fns($url='')
 	$bgwhite = imagecolorallocate($image,255,255,255);
     imagefill($image, 0, 0, $bgwhite);
 	
+    // 合成的二维码上下左右居中
     $img = imagecreatefromstring($img_source);
     $bg_width = imagesx($image);//背景图片宽度   
     $bg_height = imagesy($image);//背景图片高度   
@@ -137,18 +138,19 @@ function fns($url='')
 
 
 	// 3.开始绘制
-    // 底部文字
+    //底部文字
 	$color = imagecolorallocate($image,0,0,0);
     $font = './public/font/myfont.TTF'; // 字体文件
     $text = '微信';
 	//imagestring($image,20,imagesx($image)/2-50, imagesy($image)-30, 'hello word', $black);
     $fontsize = 12;
     $fontwidth = imagettfbbox($fontsize,0,$font,$text); //获取文字的宽度 
-    $textBottonW = ceil(($bg_width - $fontBox[2]) / 2);//计算文字的x坐标
+    $textBottonW = ceil(($bg_width - $fontBox[0]) / 2);//计算文字的x坐标
     $textBottonH = $bg_height - $fontBox[3] - 30;//计算文字的y坐标
 	imagettftext($image, $fontsize,0,$textBottonW,$textBottonH, $color, $font, $text); // 创建文字
 
     //顶部文字
+    $text = '扫一扫';
 	$red = imagecolorallocate($image,48,184,69);//创建一个颜色，以供使用
 	imagefilledrectangle($image,0,0,imagesx($image),130,$red);//画一个矩形。参数说明：30,30表示矩形左上角坐标；240,140表示矩形右下角坐标；$red表示颜色
     $color = imagecolorallocate($image,255,255,255);
