@@ -8,9 +8,13 @@ php-qrcode官网地址：http://phpqrcode.sourceforge.net/
 
 在index控制器中调用：
     如：
+
     <?php
+
     	class IndexController extends Controller {
+
     		public function index(){
+
     			$arr = array(
     				'url'    => 'https://www.baidu.com',
     				'qrDir'  => '/Public/qrcode',
@@ -20,6 +24,7 @@ php-qrcode官网地址：http://phpqrcode.sourceforge.net/
     				'botton' => '微信',
     			);
     			qrcode($arr);
+                
 			}
 		}
 
