@@ -75,12 +75,12 @@ function scerweima1($url,$qrDir,$qrName,$logo){
 	}
 	//输出图片 
     ob_start();
-	imagepng($QR);
+    imagepng($QR);
     $ob_img = ob_get_contents();
     ob_end_clean();
-	imagedestroy($QR);
-	imagedestroy($logo);
-	return $ob_img;
+    imagedestroy($QR);
+    imagedestroy($logo);
+    return $ob_img;
 }
 
 //3. 生成原始的二维码(不生成图片文件)
