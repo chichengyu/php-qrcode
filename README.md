@@ -8,17 +8,17 @@ php-qrcode官网地址：http://phpqrcode.sourceforge.net/
 
 在index控制器中调用：
     如：
-	<?php
-		class IndexController extends Controller {
+    <?php
+    	class IndexController extends Controller {
     		public function index(){
-		    	$arr = array( 
-					'url'    => 'https://www.baidu.com',
-					'qrDir'  => '/Public/qrcode',
-					'qrName' => '123',
-					'logo'   => '',
-					'top'    => '免费WIFI上万',
-					'botton' => '微信',
-		    	);
+    			$arr = array(
+    				'url'    => 'https://www.baidu.com',
+    				'qrDir'  => '/Public/qrcode',
+    				'qrName' => '123',
+    				'logo'   => '',
+    				'top'    => '免费WIFI上万',
+    				'botton' => '微信',
+    			);
     			qrcode($arr);
 			}
 		}
