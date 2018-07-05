@@ -73,7 +73,7 @@ function scerweima1($url,$qrDir,$qrName,$logo){
 		//删除临时二维码图片
   		@unlink($filename);
 	}
-     //输出图片 
+    //输出图片 
     ob_start();
     imagepng($QR);
     $ob_img = ob_get_contents();
@@ -109,8 +109,7 @@ function scerweima2($url=''){
  * ) 
  * @return   void
  */
-function qrcode($arr)
-{
+function qrcode($arr){
     $qrDir = str_replace('\\','/',$arr['qrDir']);
     $qrDir = $_SERVER['DOCUMENT_ROOT'].$qrDir;
     if (!$arr['logo']) {
