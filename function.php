@@ -73,7 +73,7 @@ function scerweima1($url,$qrDir,$qrName,$logo){
 		//删除临时二维码图片
   		@unlink($filename);
 	}
-	//输出图片 
+     //输出图片 
     ob_start();
     imagepng($QR);
     $ob_img = ob_get_contents();
@@ -103,7 +103,7 @@ function scerweima2($url=''){
  *     'url'      => 二维码链接,
  *     'qrDir'    => 二维码保存路径(根目录),
  *     'qrName'   => 二维码图片名称,
- *     'logo' => 二维码中间logo路径,
+ *     'logo'     => 二维码中间logo路径,
  *     'top'      => 顶部文字,
  *     'botton'   => 底部文字,
  * ) 
