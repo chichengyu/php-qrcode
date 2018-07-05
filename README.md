@@ -2,6 +2,7 @@
 
 php-qrcode官网地址：http://phpqrcode.sourceforge.net/
 使用的GD库qrcode包生成二维码
+
 注意：.PHP环境必须开启支持GD2扩展库支持（一般情况下都是开启状态）
 
 本次使用的是thinkphp3.2.3,具体实现代码都写在了function文件中
