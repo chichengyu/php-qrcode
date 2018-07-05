@@ -2,15 +2,13 @@
 
 // 1. 生成原始的二维码(生成图片文件)
 function scerweima($url=''){
-	$value = $url;					//二维码内容
-	
+	$value = $url;					//二维码内容	
 	$errorCorrectionLevel = 'L';	//容错级别 
 	$matrixPointSize = 3;			//生成图片大小 
 	$margin = 1;					//控制生成二维码的空白区域大小
 
 	Vendor('Phpqrcode.phpqrcode');
 	
-
 	//生成临时二维码图片
 	$filename = $_SERVER['DOCUMENT_ROOT'].'/Public/qrcode/'.time().'.png';
 	//生成二维码图片
@@ -24,7 +22,7 @@ function scerweima($url=''){
   	@unlink($filename);
 
 	//输出图片  
-  	$path = './Public/qrcode/qrcode.png';
+  	$path = $_SERVER['DOCUMENT_ROOT'].'/Public/qrcode/qrcode.png';
 	imagepng($QR, $path);
 	imagedestroy($QR);
 	return $path;
@@ -32,23 +30,31 @@ function scerweima($url=''){
 
 
 //2. 在生成的二维码中加上logo(生成图片文件)
-function scerweima1($url=''){
-	Vendor('Phpqrcode.phpqrcode');
+/**
+ * 生成二维码
+ * @param    url $url 二维码链接
+ * @param    string $qrDir 二维码保存路径(根目录)
+ * @param    string $qrName 二维码图片名称
+ * @param    string $logo 二维码中间logo路径
+ * @return   source 返回图片流资源
+ */
+function scerweima1($url,$qrDir,$qrName,$logo){
+    Vendor('Phpqrcode.phpqrcode');
 
+    is_dir($qrDir)||mkdir($qrDir,0755);
 	$value = $url;					//二维码内容  
 	$errorCorrectionLevel = 'H';	//容错级别  
 	$matrixPointSize = 60;			//生成图片大小  
 	$margin = 1;					//控制生成二维码的空白区域大小	
 	//生成临时二维码图片
-	$filename = $_SERVER['DOCUMENT_ROOT'].'/Public/qrcode_logo/'.time().'.png';
-
+	// $filename = $_SERVER['DOCUMENT_ROOT'].'/Public/qrcode_logo/'.time().'.png';
+    $filename = $qrDir.'/'.time().'.png';
 	//生成二维码图片
 	QRcode::png($value,$filename , $errorCorrectionLevel, $matrixPointSize, $margin);  
-	
-    $logo = './Public/logo/logo.png';   //准备好的logo图片  
+    //$logo = $_SERVER['DOCUMENT_ROOT'].'/Public/logo/logo.png';   //准备好的logo图片  
 	$QR = $filename;			//已经生成的原始二维码图  
  
-	if (file_exists($logo)) {   
+	if (file_exists($logo)) {
 		$QR = imagecreatefromstring(file_get_contents($QR));   		//目标图象连接资源。
 		$logo = imagecreatefromstring(file_get_contents($logo));   	//源图象连接资源。
 		$QR_width = imagesx($QR);			//二维码图片宽度   
@@ -74,7 +80,6 @@ function scerweima1($url=''){
     ob_end_clean();
 	imagedestroy($QR);
 	imagedestroy($logo);
-
 	return $ob_img;
 }
 
@@ -92,13 +97,29 @@ function scerweima2($url=''){
 
 
 // 图片合成需要的二维码
-function fns($url='')
+/**
+ * 生成二维码 
+ * @param    array(
+ *     'url'      => 二维码链接,
+ *     'qrDir'    => 二维码保存路径(根目录),
+ *     'qrName'   => 二维码图片名称,
+ *     'logo' => 二维码中间logo路径,
+ *     'top'      => 顶部文字,
+ *     'botton'   => 底部文字,
+ * ) 
+ * @return   void
+ */
+function qrcode($arr)
 {
-	$img_source = scerweima1($url);
-	//$img = imagecreatefrompng($path);
-	// 1.创建画布
-    // $image = imagecreatetruecolor(440,610);
-    // $bgwhite = imagecolorallocate($image,255,255,255);
+    $qrDir = str_replace('\\','/',$arr['qrDir']);
+    $qrDir = $_SERVER['DOCUMENT_ROOT'].$qrDir;
+    if (!$arr['logo']) {
+        $arr['logo'] = $_SERVER['DOCUMENT_ROOT'].'/Public/logo/logo.png';
+    }
+    $img_source = scerweima1($arr['url'],$qrDir,$arr['qrName'],$arr['logo']);
+    //var_dump($qrDir.'/'.$arr['qrName']);die;
+
+	// 创建画布
 	$image = imagecreatetruecolor(440,610);
 	$bgwhite = imagecolorallocate($image,255,255,255);
     imagefill($image, 0, 0, $bgwhite);
@@ -116,66 +137,39 @@ function fns($url='')
     //重新组合图片并调整大小   
     $copy = imagecopyresampled($image, $img, $from_width, $from_width+130, 0, 0, $code_qr_width,$code_qr_height, $code_width, $code_height);     
 
-// 2.填充画布背景颜色
-    // imagefill($image, 0, 0, $bgwhite);
-    // $w = imagesx($image);
-    // $h = imagesy($image);
-    // $mar = round($w * 0.02, 2);
-    // $qrw = round($w - $mar, 2);
-    // $qrh = round($h - $mar, 2);
-    // $arr = array(
-    //     'w' => $w,
-    //     'h' => $h,
-    //     'mar' => $mar,
-    //     'qrw' => $qrw,
-    //     'qrh' => $qrh,
-    // );
-    // file_put_contents('filename.txt', var_export($arr, true));
-
-    // imagecopyresampled($image,$img,0,50,0,0,$qrw,$qrh,$w,$h);
-    // imagecopyresampled($image,$img,0,0,$w,$h,$qrw,$qrh,$w,$h);
-
-
-
-	// 3.开始绘制
     //底部文字
-	$color = imagecolorallocate($image,0,0,0);
-    $font = './public/font/myfont.TTF'; // 字体文件
-    $text = '微信';
-	//imagestring($image,20,imagesx($image)/2-50, imagesy($image)-30, 'hello word', $black);
+	$color = imagecolorallocate( $image, 0, 0, 0);
+    $font = $_SERVER['DOCUMENT_ROOT'].'/public/font/myfont.TTF'; // 字体文件
     $fontsize = 12;
-    $fontwidth = imagettfbbox($fontsize,0,$font,$text); //获取文字的宽度 
-    $textBottonW = ceil(($bg_width - $fontBox[0]) / 2);//计算文字的x坐标
+    $fontwidth = imagettfbbox( $fontsize, 0, $font, $arr['botton'] ); //获取文字的宽度 
+    $textBottonW = ceil( ($bg_width - $fontBox[0]) / 2 );//计算文字的x坐标
     $textBottonH = $bg_height - $fontBox[3] - 30;//计算文字的y坐标
-	imagettftext($image, $fontsize,0,$textBottonW,$textBottonH, $color, $font, $text); // 创建文字
+	imagettftext( $image, $fontsize, 0, $textBottonW, $textBottonH, $color, $font, $arr['botton']); // 创建文字
 
     //顶部文字
-    $text = '扫一扫';
-	$red = imagecolorallocate($image,48,184,69);//创建一个颜色，以供使用
-	imagefilledrectangle($image,0,0,imagesx($image),130,$red);//画一个矩形。参数说明：30,30表示矩形左上角坐标；240,140表示矩形右下角坐标；$red表示颜色
-    $color = imagecolorallocate($image,255,255,255);
+	$red = imagecolorallocate( $image, 48, 184, 69 );//创建一个颜色，以供使用
+	imagefilledrectangle( $image, 0, 0, imagesx($image), 130, $red );//画一个矩形。参数说明：30,30表示矩形左上角坐标；240,140表示矩形右下角坐标；$red表示颜色
+    $color = imagecolorallocate( $image, 255, 255, 255 );
     $fontsize = 50;
-    $fontBox = imagettfbbox($fontsize, 0, $font, $text);//文字水平居中实质
-    $textTopW = ceil(($bg_width - $fontBox[2]) / 2);//计算文字的x坐标
-    $textTopH = (130 - $fontBox[5])/2;//计算文字的y坐标
-    imagettftext ( $image, $fontsize, 0, $textTopW, $textTopH, $color, $font, $text );
-
+    $fontBox = imagettfbbox( $fontsize, 0, $font, $arr['top'] );//文字水平居中实质
+    $textTopW = ceil( ($bg_width - $fontBox[2] ) / 2 );//计算文字的x坐标
+    $textTopH = ( 130 - $fontBox[5] ) / 2;//计算文字的y坐标
+    imagettftext ( $image, $fontsize, 0, $textTopW, $textTopH, $color, $font, $arr['top'] );
     // $arr = array(
     //     'fontBox' => $fontBox,
     //     'bg_width' => $bg_width,
     // );
     // file_put_contents('filename.txt', json_encode($arr));
 
-
-	// 4.输出图像到浏览器
-	header('Content-Type:image/png');
-	$paths = './Public/qrcode_logo/logo_01.png';
-	imagepng($image,$paths);
-
-	// 5.关闭内存中的图像资源
-	imagedestroy($image);
-    //@unlink($path);
-    radius_img($paths, $radius = 15);
+    if ( strpos($arr['qrName'], '.png') === false ) {
+        $arr['qrName'] = $arr['qrName'].'.png';
+    }
+    header('Content-Type:image/png');
+    //$paths = $_SERVER['DOCUMENT_ROOT'].'/Public/qrcode_logo/logo_01.png';
+    $path = $qrDir.'/'.$arr['qrName'];
+	imagepng( $image, $path );
+	imagedestroy( $image );
+    radius_img( $path );
 }
 
 
@@ -185,7 +179,7 @@ function fns($url='')
  * @param  integer $radius  圆角半径长度默认为15,处理成圆型
  * @return [type]           [description]
  */
-function radius_img($imgpath = './t.png', $radius = 15) {
+function radius_img($imgpath, $radius = 15) {
     $ext     = pathinfo($imgpath);
     $src_img = null;
     $index = 0;
@@ -255,7 +249,6 @@ function radius_img($imgpath = './t.png', $radius = 15) {
         header("content-type:image/png");
         imagepng($img,$imgpath);
     }
-
     imagedestroy($img);
     //@unlink($imgpath);
     //return true;
