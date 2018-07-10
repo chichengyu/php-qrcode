@@ -2,10 +2,10 @@
 
 // 1. 生成原始的二维码(生成图片文件)
 function scerweima($url=''){
-	$value = $url;					//二维码内容	
+	$value = $url;			//二维码内容	
 	$errorCorrectionLevel = 'L';	//容错级别 
-	$matrixPointSize = 3;			//生成图片大小 
-	$margin = 1;					//控制生成二维码的空白区域大小
+	$matrixPointSize = 3;		//生成图片大小 
+	$margin = 1;			//控制生成二维码的空白区域大小
 
 	Vendor('Phpqrcode.phpqrcode');
 	
@@ -111,7 +111,7 @@ function scerweima2($url=''){
  */
 function qrcode($arr){
     $qrDir = str_replace('\\','/',$arr['qrDir']);
-    $qrDir = $_SERVER['DOCUMENT_ROOT'].$qrDir;
+    $qrDir = $_SERVER['DOCUMENT_ROOT'].$qrDir.'/'.date('Y-m');
     if (!$arr['logo']) {
         $arr['logo'] = $_SERVER['DOCUMENT_ROOT'].'/Public/logo/logo.png';
     }
