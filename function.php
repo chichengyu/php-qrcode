@@ -3,7 +3,7 @@
 // 1. 生成原始的二维码(生成图片文件)
 /**
  * 生成二维码
- * @param    url $url       二维码链接
+ * @param    url    $url       二维码链接
  * @param    string $qrDir  二维码保存路径(根目录)
  * @param    string $qrName 二维码图片名称
  * @return   path 返回生成二维码路径
@@ -39,7 +39,7 @@ function scerweima($url='',$qrDir,$qrName){
 //2. 在生成的二维码中加上logo(生成图片文件)
 /**
  * 生成二维码
- * @param    url $url 二维码链接
+ * @param    url    $url 二维码链接
  * @param    string $qrDir 二维码保存路径(根目录)
  * @param    string $qrName 二维码图片名称
  * @param    string $logo 二维码中间logo路径
