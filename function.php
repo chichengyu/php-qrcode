@@ -9,6 +9,7 @@
  * @return   path 返回生成二维码路径
  */
 function scerweima($url='',$qrDir,$qrName){
+	$qrDir = $_SERVER['DOCUMENT_ROOT'].$qrDir.'/'.date('Y-m');
 	is_dir($qrDir) || mkdir($qrDir,0755,true);
 	$value = $url;			//二维码内容	
 	$errorCorrectionLevel = 'L';	//容错级别 
@@ -30,6 +31,7 @@ function scerweima($url='',$qrDir,$qrName){
 
 	//输出图片  
   	$path = $qrDir.'/'.$qrName.'.png';
+	header('Content-Type:image/png');
 	imagepng($QR, $path);
 	imagedestroy($QR);
 	return $path;
