@@ -9,8 +9,8 @@
  * @return   path 返回生成二维码路径
  */
 function scerweima($url='',$qrDir,$qrName){
-	$qrDir = $_SERVER['DOCUMENT_ROOT'].$qrDir.'/'.date('Y-m');
-	is_dir($qrDir) || mkdir($qrDir,0755,true);
+    	$qrDir = $_SERVER['DOCUMENT_ROOT'].$qrDir.'/'.date('Y-m');
+    	is_dir($qrDir) || mkdir($qrDir,0755,true);
 	$value = $url;			//二维码内容	
 	$errorCorrectionLevel = 'L';	//容错级别 
 	$matrixPointSize = 60;		//生成图片大小 
@@ -22,7 +22,7 @@ function scerweima($url='',$qrDir,$qrName){
 	//生成二维码图片
 	QRcode::png($value,$filename , $errorCorrectionLevel, $matrixPointSize, $margin);  
 
-	$QR = $filename;				//已经生成的原始二维码图片文件  
+	$QR = $filename;  //已经生成的原始二维码图片文件  
  
 	$QR = imagecreatefromstring(file_get_contents($QR)); 
 
@@ -31,7 +31,7 @@ function scerweima($url='',$qrDir,$qrName){
 
 	//输出图片  
   	$path = $qrDir.'/'.$qrName.'.png';
-	header('Content-Type:image/png');
+    	header('Content-Type:image/png');
 	imagepng($QR, $path);
 	imagedestroy($QR);
 	return $path;
