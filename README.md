@@ -1,6 +1,7 @@
 # php-qrcode-function
 
 特别注意：在调用函数的时候,$url链接必须传,不能为空,因为二维码链接为空是不能生成二维码的,可以传$_SERVER['HTTP_HOST']。
+
 php-qrcode官网地址：http://phpqrcode.sourceforge.net/
 使用的GD库qrcode包生成二维码
 
