@@ -48,7 +48,7 @@ function scerweima($url='',$qrDir,$qrName){
 function scerweima1($url,$qrDir,$qrName,$logo){
     	Vendor('Phpqrcode.phpqrcode');
 
-    	is_dir($qrDir)||mkdir($qrDir,0755);
+    	is_dir($qrDir)||mkdir($qrDir,0755,true);
 	$value = $url;					//二维码内容  
 	$errorCorrectionLevel = 'H';	//容错级别  
 	$matrixPointSize = 60;			//生成图片大小  
