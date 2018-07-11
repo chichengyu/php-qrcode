@@ -9,16 +9,16 @@
  * @return   path 返回生成二维码路径
  */
 function scerweima($url='',$qrDir,$qrName){
-    	$qrDir = $_SERVER['DOCUMENT_ROOT'].$qrDir.'/'.date('Y-m');
-    	is_dir($qrDir) || mkdir($qrDir,0755,true);
+    $qrDir = $_SERVER['DOCUMENT_ROOT'].$qrDir.'/'.date('Y-m');
+    is_dir($qrDir) || mkdir($qrDir,0755,true);
 	$value = $url;			//二维码内容	
 	$errorCorrectionLevel = 'L';	//容错级别 
 	$matrixPointSize = 60;		//生成图片大小 
 	$margin = 1;			//控制生成二维码的空白区域大小
 
 	Vendor('Phpqrcode.phpqrcode');
-    	//生成临时二维码图片
-    	$filename = $qrDir.'/'.time().'.png';
+    //生成临时二维码图片
+    $filename = $qrDir.'/'.time().'.png';
 	//生成二维码图片
 	QRcode::png($value,$filename , $errorCorrectionLevel, $matrixPointSize, $margin);  
 
@@ -31,7 +31,7 @@ function scerweima($url='',$qrDir,$qrName){
 
 	//输出图片  
   	$path = $qrDir.'/'.$qrName.'.png';
-    	header('Content-Type:image/png');
+    header('Content-Type:image/png');
 	imagepng($QR, $path);
 	imagedestroy($QR);
 	return $path;
@@ -48,19 +48,19 @@ function scerweima($url='',$qrDir,$qrName){
  * @return   source 返回图片流资源
  */
 function scerweima1($url,$qrDir,$qrName,$logo){
-    	Vendor('Phpqrcode.phpqrcode');
+    Vendor('Phpqrcode.phpqrcode');
 
-    	is_dir($qrDir)||mkdir($qrDir,0755,true);
+    is_dir($qrDir)||mkdir($qrDir,0755,true);
 	$value = $url;					//二维码内容  
 	$errorCorrectionLevel = 'H';	//容错级别  
 	$matrixPointSize = 60;			//生成图片大小  
 	$margin = 1;					//控制生成二维码的空白区域大小	
 	//生成临时二维码图片
 	// $filename = $_SERVER['DOCUMENT_ROOT'].'/Public/qrcode_logo/'.time().'.png';
-    	$filename = $qrDir.'/'.time().'.png';
+    $filename = $qrDir.'/'.time().'.png';
 	//生成二维码图片
 	QRcode::png($value,$filename , $errorCorrectionLevel, $matrixPointSize, $margin);  
-    	//$logo = $_SERVER['DOCUMENT_ROOT'].'/Public/logo/logo.png';   //准备好的logo图片  
+    //$logo = $_SERVER['DOCUMENT_ROOT'].'/Public/logo/logo.png';   //准备好的logo图片  
 	$QR = $filename;			//已经生成的原始二维码图  
  
 	if (file_exists($logo)) {
@@ -82,13 +82,13 @@ function scerweima1($url,$qrDir,$qrName,$logo){
 		//删除临时二维码图片
   		@unlink($filename);
 	}
-    	//输出图片 
-    	ob_start();
-    	imagepng($QR);
-    	$ob_img = ob_get_contents();
-    	ob_end_clean();
-    	imagedestroy($QR);
-    	imagedestroy($logo);
+	//输出图片 
+	ob_start();
+	imagepng($QR);
+	$ob_img = ob_get_contents();
+	ob_end_clean();
+	imagedestroy($QR);
+	imagedestroy($logo);
     return $ob_img;
 }
 
