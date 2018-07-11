@@ -2,7 +2,7 @@
 
 特别注意：在调用函数的时候,$url链接必须传,不能为空,因为二维码链接为空是不能生成二维码的,可以传$_SERVER['HTTP_HOST']当前域名(主机名)。
 
-php-qrcode官网地址：http://phpqrcode.sourceforge.net/
+php-qrcode官网地址：http://phpqrcode.sourceforge.net/,也可以在本页面下载,phpqrcode包已上传
 使用的GD库qrcode包生成二维码
 
 注意：.PHP环境必须开启支持GD2扩展库支持（一般情况下都是开启状态）
