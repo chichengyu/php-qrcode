@@ -1,16 +1,23 @@
 <?php 
 
 // 1. 生成原始的二维码(生成图片文件)
-function scerweima($url=''){
+/**
+ * 生成二维码
+ * @param    url $url       二维码链接
+ * @param    string $qrDir  二维码保存路径(根目录)
+ * @param    string $qrName 二维码图片名称
+ * @return   path 返回生成二维码路径
+ */
+function scerweima($url='',$qrDir,$qrName){
+    is_dir($qrDir) || mkdir($qrDir,0755,true);
 	$value = $url;			//二维码内容	
 	$errorCorrectionLevel = 'L';	//容错级别 
-	$matrixPointSize = 3;		//生成图片大小 
+	$matrixPointSize = 60;		//生成图片大小 
 	$margin = 1;			//控制生成二维码的空白区域大小
 
 	Vendor('Phpqrcode.phpqrcode');
-	
-	//生成临时二维码图片
-	$filename = $_SERVER['DOCUMENT_ROOT'].'/Public/qrcode/'.time().'.png';
+    //生成临时二维码图片
+    $filename = $qrDir.'/'.time().'.png';
 	//生成二维码图片
 	QRcode::png($value,$filename , $errorCorrectionLevel, $matrixPointSize, $margin);  
 
@@ -22,7 +29,7 @@ function scerweima($url=''){
   	@unlink($filename);
 
 	//输出图片  
-  	$path = $_SERVER['DOCUMENT_ROOT'].'/Public/qrcode/qrcode.png';
+  	$path = $qrDir.'/'.$qrName.'.png';
 	imagepng($QR, $path);
 	imagedestroy($QR);
 	return $path;
