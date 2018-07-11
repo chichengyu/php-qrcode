@@ -18,7 +18,7 @@ php-qrcode官网地址：http://phpqrcode.sourceforge.net/
     	class IndexController extends Controller {
 
     		public function index(){
-			//此调用的生成的二维码是带logo与美化后的
+				//此调用的生成的二维码是带logo与美化后的
     			$arr = array(
     				'url'    => 'https://www.baidu.com',
     				'qrDir'  => '/Public/qrcode',
